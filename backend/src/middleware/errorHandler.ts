@@ -1,5 +1,5 @@
 import { ErrorRequestHandler, Response } from "express";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../config/http";
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../constants/http";
 import { z } from "zod";
 
 const handleZodError = (res: Response, error: z.ZodError) => {

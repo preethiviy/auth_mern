@@ -6,7 +6,7 @@ import { APP_ORIGIN, NODE_ENV, PORT } from "./constants/env";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler";
 import catchErrors from "./utils/catchErrors";
-import { OK } from "./config/http";
+import { OK } from "./constants/http";
 import authRoutes from "./routes/auth.route";
 
 const app = express();
