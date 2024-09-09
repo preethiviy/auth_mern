@@ -1,4 +1,4 @@
-import { JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
+import { JWT_SECRET } from "../constants/env";
 import { CONFLICT, UNAUTHORIZED } from "../constants/http";
 import VerificationCodeType from "../constants/verificationCodeTypes";
 import SessionModel from "../models/session.model";
