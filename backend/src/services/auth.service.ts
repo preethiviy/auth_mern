@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import { RefreshTokenPayload, refreshTokenSignOptions, signToken, verifyToken } from "../utils/jwt";
 import { sendMail } from "../utils/sendMail";
 import { getPasswordResetTemplate, getVerifyEmailTemplate } from "../utils/emailTemplates";
+import { hashValue } from "../utils/bcrypt";
 
 export type CreateAccountParams = {
     email: string;
@@ -250,3 +251,32 @@ export const sendPasswordResetEmail = async (email: string) => {
         emailId: data.id
     }
 }
+
+type ResetPasswordParams = {
+    password: string;
+    verificationCode: string;
+};
+
+export const resetPassword = async ({
+    verificationCode,
+    password,
+}: ResetPasswordParams) => {
+    const validCode = await VerificationCodeModel.findOne({
+        _id: verificationCode,
+        type: VerificationCodeType.PasswordReset,
+        expiresAt: { $gt: new Date() },
+    });
+    appAssert(validCode, NOT_FOUND, "Invalid or expired verification code");
+  
+    const updatedUser = await UserModel.findByIdAndUpdate(validCode.userId, {
+        password: await hashValue(password),
+    });
+    appAssert(updatedUser, INTERNAL_SERVER_ERROR, "Failed to reset password");
+  
+    await validCode.deleteOne();
+  
+    // delete all sessions
+    await SessionModel.deleteMany({ userId: validCode.userId });
+  
+    return { user: updatedUser.omitPassword() };
+};
