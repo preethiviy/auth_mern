@@ -104,7 +104,7 @@ export const loginUser = async ({email,password,userAgent}: LoginParams) => {
     )
 
     // validate password from the request
-    const isValid = user.comparePassword(password);
+    const isValid = await user.comparePassword(password);
     appAssert(
         isValid,
         UNAUTHORIZED,
