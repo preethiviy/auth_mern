@@ -6,14 +6,17 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import theme from "./theme/index.ts";
 import queryClient from "./config/queryClient.ts";
+import React from 'react';
 
 createRoot(document.getElementById('root')!).render(
-  <ChakraProvider theme={theme}>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-        <ReactQueryDevtools position="bottom" initialIsOpen={false} />
-      </BrowserRouter>
-    </QueryClientProvider>
-  </ChakraProvider>
+  <React.StrictMode>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+          <ReactQueryDevtools position="bottom" initialIsOpen={false} />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ChakraProvider>
+  </React.StrictMode>
 )
