@@ -40,7 +40,7 @@ app.get(
     catchErrors(async (req, res, next) => {
     // throw new Error("Test error");
     return res.status(OK).json({
-        status: "healthy"
+        status: "healthy!!!"
     })
 }));
 
