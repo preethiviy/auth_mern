@@ -16,8 +16,8 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     env_file: ./backend/.env
-    ports: 
-      - 4004:4004
+    # ports: 
+    #   - 4004:4004
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -32,8 +32,8 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     env_file: ./frontend/.env
-    ports: 
-      - 5173:5173
+    # ports: 
+    #   - 5173:5173
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -42,9 +42,26 @@ services:
     command: npm run dev -- --host
     depends_on:
       - api
+  
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - mern-app
+    depends_on:
+      - api
+      - frontend
 
 volumes:
   mongo_data:
+  caddy_data:
+  caddy_config:
 networks:
   mern-app:
     driver: bridge
